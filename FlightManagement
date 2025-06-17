@@ -1,0 +1,85 @@
+
+abstract class Flight {
+    protected String flightNumber;
+    protected String origin;
+    protected String destination;
+    protected double baseFare;
+    
+    public Flight(String flightNumber, String origin, String destination, double baseFare) {
+        this.flightNumber = flightNumber;
+        this.origin = origin;
+        this.destination = destination;
+        this.baseFare = baseFare;
+    }
+
+    // Abstract Method
+    public abstract double calculateFare();
+
+
+    public void displayDetails() {
+        System.out.println("Flight Number: " + flightNumber);
+        System.out.println("Origin: " + origin);
+        System.out.println("Destination: " + destination);
+        System.out.println("Base Fare: " + baseFare);
+    }
+}
+
+class DomesticFlight extends Flight {
+    private final double domesticTax = 0.10; // 10%
+
+    public DomesticFlight(String flightNumber, String origin, String destination, double baseFare) {
+        super(flightNumber, origin, destination, baseFare);
+    }
+
+    @Override
+    public double calculateFare() {
+        return baseFare + (baseFare * domesticTax);
+    }
+
+    @Override
+    public void displayDetails() {
+        super.displayDetails();
+        System.out.println("Domestic Tax: 10%");
+        System.out.println("Total Fare: " + calculateFare());
+     System.out.println("---------------------");
+    }
+}
+
+class InternationalFlight extends Flight {
+    private final double internationalTax = 0.20; 
+    private final double immigrationFee;
+
+    public InternationalFlight(String flightNumber, String origin, String destination, double baseFare, double immigrationFee) {
+        super(flightNumber, origin, destination, baseFare);
+        this.immigrationFee = immigrationFee;
+    }
+
+    @Override
+    public double calculateFare() {
+        return baseFare + (baseFare * internationalTax) + immigrationFee;
+    }
+
+    @Override
+    public void displayDetails() {
+        super.displayDetails();
+        System.out.println("International Tax: 20%");
+        System.out.println("Immigration Fee: " + immigrationFee);
+        System.out.println("Total Fare: " + calculateFare());
+        System.out.println("---------------------");
+    }
+}
+
+public class FlightManager {
+    public static void main(String[] args) {
+        
+        Flight[] flights = new Flight[2];
+
+    
+        flights[0] = new DomesticFlight("D101", "Delhi", "Mumbai", 5000);
+        flights[1] = new DomesticFlight("D102", "Chennai", "Bangalore", 4000);
+       
+        for (Flight f : flights) {
+            f.displayDetails();  
+        }
+    }
+}
